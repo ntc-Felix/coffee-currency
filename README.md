@@ -18,7 +18,7 @@ minikube start --nodes 3 --memory 16384 --cpus 2 --driver=virtualbox --disk-size
 ```
 # Levantando recursos no cluster
 
-# Installing AIRFLOW using HELM
+# Apache Airflow
 - Setting up helm
 ```sh
 helm repo add apache-airflow https://airflow.apache.org/
@@ -30,24 +30,6 @@ rm -rf airflow-1.6.0.tgz
 
 - Changing helm values
 ```sh
-# we are going to apply a ConfigMap resource in our kubernetes cluster
-# This config map will be named as "airflow-variables"
-# And it will contain our airflow environement variables
-...
-ExtraEnvFrom: |
-    - configMapRef:
-        name: 'airflow-variables'
-# to verify if your variables were applied to the cluster you need to inspect from the CLI
-# kubectl exec --stdin --tty <name-of-your-webserver-container> -n airflow -- /bin/bash
-# then type: python (in your bash)
-# from airflow.models import Variable
-# Variable.get("my_s3_bucket")
-...
-# If you are getting the message "mkdir: cannot create directory ‘/bitnami/postgresql/data’: Permission denied"
-# go to the file helm-charts/airflow/charts/postgresql/values.yaml
-# And change the value volumePermissions.enabled to true
-...
-# Youl will need to create a git-credentials.yaml and apply to your cluster
 gitSync:
   enabled: true
   repo: https://github.com/owshq-marlon/demo.git
@@ -55,23 +37,7 @@ gitSync:
   rev: HEAD
   depth: 1
   maxFailures: 0
-  subPath: "helm-charts/airflow/dags"
-  # if your repo needs a user name password
-  # you can load them to a k8s secret like the one below
-  #   ---
-  #   apiVersion: v1
-  #   kind: Secret
-  #   metadata:
-  #     name: git-credentials
-  #   data:
-  #     GIT_SYNC_USERNAME: <base64_encoded_git_username>
-  #     GIT_SYNC_PASSWORD: <base64_encoded_git_password>
-  # and specify the name of the secret below
-  #
-  credentialsSecret: git-credentials
-...
-enableBuiltInSecretEnvVars:
-  AIRFLOW__CORE__ENABLE_XCOM_PICKLING: true
+  subPath: ""
 ```
 
 ```sh
@@ -88,4 +54,23 @@ mv minio helm-charts/
 
 ```sh
 helm install minio helm-charts/minio -n minio --create-namespace --debug
+```
+
+# Trino
+```sh
+helm repo add trino https://trinodb.github.io/charts
+helm pull trino/trino
+tar zxvf trino-0.9.0.tgz
+mv trino helm-charts/
+```
+```sh
+helm install trino helm-charts/trino -n trino --create-namespace --debug
+```
+
+# Apache Superset
+```sh
+helm repo add superset https://apache.github.io/superset
+helm pull superset/tsupersetrino
+tar zxvf superset-0.8.7.tgz
+mv superset helm-charts/
 ```
