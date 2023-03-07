@@ -450,7 +450,7 @@ primary:
   ## @param primary.podSecurityContext.fsGroup Group ID for the pod
   ##
   podSecurityContext:
-    enabled: true
+    enabled: false
     fsGroup: 1001
   ## Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
@@ -458,8 +458,8 @@ primary:
   ## @param primary.containerSecurityContext.runAsUser User ID for the container
   ##
   containerSecurityContext:
-    enabled: true
-    runAsUser: 1001
+    enabled: false
+    runAsUser: 0
   ## @param primary.hostAliases PostgreSQL primary pods host aliases
   ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
   ##
@@ -787,7 +787,7 @@ readReplicas:
   ## @param readReplicas.podSecurityContext.fsGroup Group ID for the pod
   ##
   podSecurityContext:
-    enabled: true
+    enabled: false
     fsGroup: 1001
   ## Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
@@ -795,8 +795,8 @@ readReplicas:
   ## @param readReplicas.containerSecurityContext.runAsUser User ID for the container
   ##
   containerSecurityContext:
-    enabled: true
-    runAsUser: 1001
+    enabled: false
+    runAsUser: 0
   ## @param readReplicas.hostAliases PostgreSQL read only pods host aliases
   ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
   ##
@@ -1119,7 +1119,7 @@ networkPolicy:
 volumePermissions:
   ## @param volumePermissions.enabled Enable init container that changes the owner and group of the persistent volume
   ##
-  enabled: false
+  enabled: true
   ## @param volumePermissions.image.registry Init container volume-permissions image registry
   ## @param volumePermissions.image.repository Init container volume-permissions image repository
   ## @param volumePermissions.image.tag Init container volume-permissions image tag (immutable tags are recommended)
@@ -1257,9 +1257,9 @@ metrics:
   ## @param metrics.containerSecurityContext.runAsNonRoot Set PostgreSQL Prometheus exporter containers' Security Context runAsNonRoot
   ##
   containerSecurityContext:
-    enabled: true
-    runAsUser: 1001
-    runAsNonRoot: true
+    enabled: false
+    runAsUser: 0
+    runAsNonRoot: false
   ## Configure extra options for PostgreSQL Prometheus exporter containers' liveness, readiness and startup probes
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
   ## @param metrics.livenessProbe.enabled Enable livenessProbe on PostgreSQL Prometheus exporter containers

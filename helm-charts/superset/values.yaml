@@ -640,7 +640,7 @@ init:
     - "/bin/sh"
     - "-c"
     - ". {{ .Values.configMountPath }}/superset_bootstrap.sh; . {{ .Values.configMountPath }}/superset_init.sh"
-  enabled: true
+  enabled: false
   loadExamples: false
   createAdmin: true
   adminUser:
@@ -725,10 +725,10 @@ postgresql:
     persistence:
       ##
       ## Enable PostgreSQL persistence using Persistent Volume Claims.
-      enabled: true
+      enabled: false
       ##
       ## Persistent class
-      # storageClass: classname
+      storageClass: standard
       ##
       ## Access modes:
       accessModes:

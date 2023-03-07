@@ -74,3 +74,7 @@ helm pull superset/tsupersetrino
 tar zxvf superset-0.8.7.tgz
 mv superset helm-charts/
 ```
+
+```sh
+helm install superset helm-charts/superset -n superset --create-namespace --debug
+```
